@@ -1,0 +1,48 @@
+setting:
+  # %prefix%
+  prefix: "<g:f1f50a>[Home]</g:f59105>&f"
+
+  # 카운트 후 홈으로 이동할 지
+  # └ 움직였을 때 이동이 캔슬됩니다.
+  count-down-teleport:
+    # false일 시 바로 이동
+    enabled: true
+    # 초 단위
+    time: 3
+
+# 이동 알림
+announce:
+  count-down:
+    sound:
+      enabled: true
+      name: "minecraft:entity.experience_orb.pickup"
+      volume: 1
+      pitch: 1
+    chat:
+      enabled: false
+      broadcast: false
+      message: "%prefix% %time%초 후에 이동합니다."
+    title:
+      enabled: true
+      title: "%prefix%"
+      sub-title: "%time%초 후에 이동합니다."
+      fade-in: 0
+      duration: 25
+      fade-out: 5
+  detect-moving:
+    sound:
+      enabled: true
+      name: "minecraft:entity.experience_orb.pickup"
+      volume: 1
+      pitch: 0
+    chat:
+      enabled: false
+      broadcast: false
+      message: "%prefix% 움직임이 감지되어 이동이 취소되었습니다."
+    title:
+      enabled: true
+      title: "%prefix%"
+      sub-title: "움직임이 감지되어 이동이 취소되었습니다."
+      fade-in: 5
+      duration: 30
+      fade-out: 5

@@ -11,9 +11,9 @@ import java.util.UUID
 @Repository
 class HomeRepository {
 
-    suspend fun create(homeDTO: HomeDTO) {
+    suspend fun create(uniqueId: UUID, homeDTO: HomeDTO) {
         newSuspendedTransaction {
-            HomeEntity.new {
+            HomeEntity.new(uniqueId) {
                 this.port = homeDTO.port
                 this.world = homeDTO.world
                 this.x = homeDTO.x

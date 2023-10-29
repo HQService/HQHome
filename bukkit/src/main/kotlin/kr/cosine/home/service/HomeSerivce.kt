@@ -5,6 +5,7 @@ import kr.cosine.home.database.dto.HomeDTO
 import kr.cosine.home.database.repository.HomeRepository
 import kr.cosine.home.location.impl.HomeLocationImpl
 import kr.cosine.home.netty.packet.TeleportToHomePacket
+import kr.cosine.home.registry.SettingRegistry
 import kr.hqservice.framework.bukkit.core.HQBukkitPlugin
 import kr.hqservice.framework.bukkit.core.coroutine.extension.BukkitMain
 import kr.hqservice.framework.global.core.component.Service
@@ -21,7 +22,8 @@ class HomeSerivce(
     private val server: Server,
     private val packetSender: PacketSender,
     private val nettyServer: NettyServer,
-    private val homeRepository: HomeRepository
+    private val homeRepository: HomeRepository,
+    private val countDownService: CountDownService
 ) {
 
     suspend fun setHome(player: Player) {
@@ -43,7 +45,7 @@ class HomeSerivce(
         if (homeRepository.existsByUniqueId(playerUniqueId)) {
             homeRepository.update(playerUniqueId, homeDTO)
         } else {
-            homeRepository.create(homeDTO)
+            homeRepository.create(playerUniqueId, homeDTO)
         }
         player.sendMessage("현재 위치를 홈으로 설정하였습니다.")
     }
@@ -58,17 +60,19 @@ class HomeSerivce(
             player.sendMessage("§c채널을 불러오지 못했습니다.")
             return
         }
-        val homeLocation = HomeLocationImpl(
-            channel,
-            homeDTO.world,
-            homeDTO.x,
-            homeDTO.y,
-            homeDTO.z,
-            homeDTO.yaw,
-            homeDTO.pitch
-        )
-        val teleportToHomePacket = TeleportToHomePacket(playerUniqueId, homeLocation)
-        packetSender.sendPacketToProxy(teleportToHomePacket)
+        countDownService.countDown(player) {
+            val homeLocation = HomeLocationImpl(
+                channel,
+                homeDTO.world,
+                homeDTO.x,
+                homeDTO.y,
+                homeDTO.z,
+                homeDTO.yaw,
+                homeDTO.pitch
+            )
+            val teleportToHomePacket = TeleportToHomePacket(playerUniqueId, homeLocation)
+            packetSender.sendPacketToProxy(teleportToHomePacket)
+        }
     }
 
     fun teleport(uniqueId: UUID, location: Location) {
