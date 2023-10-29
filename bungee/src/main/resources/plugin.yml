@@ -1,0 +1,6 @@
+name: HQHome
+main: kr.cosine.home.HQHome
+version: 1.0.0
+author: Cosine_A
+depends:
+  - HQFramework

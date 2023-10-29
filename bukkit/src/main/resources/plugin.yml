@@ -1,0 +1,19 @@
+name: HQHome
+main: kr.cosine.home.HQHome
+api-version: 1.18
+version: 1.0.0
+author: Cosine_A
+depend:
+  - HQFramework
+
+permissions:
+  hqhome.home:
+    default: op
+
+commands:
+  셋홈:
+    description: 셋홈 명령어입니다.
+    permission: hqhome.home
+  홈:
+    description: 홈 명령어입니다.
+    permission: hqhome.home
